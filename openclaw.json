@@ -42,12 +42,12 @@
   "channels": {
     "feishu": {
       "allowFrom": [],
-      "appId": "",
-      "appSecret": "",
+      "appId": "cli_a927d79c03381bd2",
+      "appSecret": "umOc2jGewUdLY2vJKP16zc21NO3dP3mo",
       "connectionMode": "websocket",
       "dmPolicy": "pairing",
       "domain": "feishu",
-      "enabled": false,
+      "enabled": true,
       "groupAllowFrom": [],
       "groupPolicy": "open",
       "requireMention": true,
@@ -63,7 +63,7 @@
   "gateway": {
     "auth": {
       "mode": "token",
-      "token": "a1b858a3-c810-4b08-8f32-5025fc2169d7"
+      "token": "e67909ee-19dd-46b7-b08c-972490fa1816"
     },
     "bind": "loopback",
     "controlUi": {
@@ -93,7 +93,7 @@
     "ackReactionScope": "group-mentions"
   },
   "meta": {
-    "lastTouchedAt": "2026-03-13T14:15:59.363Z",
+    "lastTouchedAt": "2026-03-15T10:05:00.000Z",
     "lastTouchedVersion": "2026.3.12"
   },
   "models": {
