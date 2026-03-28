@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.job.assistant.mapper.InterviewMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.job.assistant.entity.Interview">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="company" property="company"/>
+        <result column="position" property="position"/>
+        <result column="interview_date" property="interviewDate"/>
+        <result column="location" property="location"/>
+        <result column="status" property="status"/>
+        <result column="result" property="result"/>
+        <result column="notes" property="notes"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, user_id, company, position, interview_date, location, status, result, notes, created_at, updated_at
+    </sql>
+
+    <!-- 根据ID查询面试记录 -->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM interview
+        WHERE id = #{id}
+    </select>
+
+    <!-- 查询用户的所有面试记录（分页） -->
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM interview
+        WHERE user_id = #{userId}
+        <if test="company != null and company != ''">
+            AND company LIKE CONCAT('%', #{company}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        ORDER BY interview_date DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 统计用户面试记录数量 -->
+    <select id="countByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM interview
+        WHERE user_id = #{userId}
+        <if test="company != null and company != ''">
+            AND company LIKE CONCAT('%', #{company}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <!-- 插入面试记录 -->
+    <insert id="insert" parameterType="com.job.assistant.entity.Interview" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO interview
+        (user_id, company, position, interview_date, location, status, notes)
+        VALUES
+        (#{userId}, #{company}, #{position}, #{interviewDate}, #{location}, #{status}, #{notes})
+    </insert>
+
+    <!-- 更新面试记录 -->
+    <update id="update" parameterType="com.job.assistant.entity.Interview">
+        UPDATE interview
+        <set>
+            <if test="company != null">company = #{company},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="interviewDate != null">interview_date = #{interviewDate},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="notes != null">notes = #{notes},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除面试记录 -->
+    <delete id="delete">
+        DELETE FROM interview
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 根据用户ID删除所有面试记录 -->
+    <delete id="deleteByUserId">
+        DELETE FROM interview
+        WHERE user_id = #{userId}
+    </delete>
+
+</mapper>

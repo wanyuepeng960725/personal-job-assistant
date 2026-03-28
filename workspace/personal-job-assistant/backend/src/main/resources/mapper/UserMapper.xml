@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.job.assistant.mapper.UserMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.job.assistant.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, username, email, password, created_at, updated_at
+    </sql>
+
+    <!-- 根据用户名查询用户 -->
+    <select id="findByUsername" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        WHERE username = #{username}
+    </select>
+
+    <!-- 根据邮箱查询用户 -->
+    <select id="findByEmail" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <!-- 根据ID查询用户 -->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insert" parameterType="com.job.assistant.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user
+        (username, email, password)
+        VALUES (#{username}, #{email}, #{password})
+    </insert>
+
+    <!-- 更新用户 -->
+    <update id="update" parameterType="com.job.assistant.entity.User">
+        UPDATE user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="password != null">password = #{password},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除用户 -->
+    <delete id="delete">
+        DELETE FROM user
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
